@@ -11,6 +11,8 @@
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using Microsoft.IdentityModel.Tokens;
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Files;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
@@ -28,9 +30,10 @@
         /// Initializes a new instance of the <see cref="Startup" /> class.
         /// </summary>
         /// <param name="configuration">An application configuration properties.</param>
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
+            Environment = environment;
         }
 
         /// <summary>
@@ -38,6 +41,7 @@
         /// </summary>
         public IConfiguration Configuration { get; }
 
+        private IWebHostEnvironment Environment { get; }
         /// <summary>
         /// Configurate application services.
         /// </summary>
@@ -48,6 +52,23 @@
         public void ConfigureServices(IServiceCollection services)
         {
             string connStr = Configuration["DefConnStr"];
+
+            var authorityUrl = Configuration["AuthorityUrl"];
+            services.AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", options =>
+                {
+                    options.Authority = authorityUrl;
+                    if (Environment.IsDevelopment())
+                    {
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateAudience = false,
+                        };
+                        options.RequireHttpsMetadata = false;
+                    }
+                });
+
+            services.AddAuthorization();
 
             services.AddMvcCore(
                     options =>
@@ -83,6 +104,9 @@
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
