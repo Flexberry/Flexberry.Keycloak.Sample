@@ -8,6 +8,7 @@ moduleFor('route:t-v-keycloak-sample-social-network-l', 'Unit | Route | t-v-keyc
     'service:objectlistview-events',
     'service:app-state',
     'service:adv-limit',
+    'service:keycloak-session',
   ],
 });
 

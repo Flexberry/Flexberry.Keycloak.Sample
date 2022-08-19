@@ -8,6 +8,7 @@ moduleFor('route:t-v-keycloak-sample-chat-bot-message-l', 'Unit | Route | t-v-ke
     'service:objectlistview-events',
     'service:app-state',
     'service:adv-limit',
+    'service:keycloak-session',
   ],
 });
 

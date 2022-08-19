@@ -8,6 +8,7 @@ moduleFor('route:t-v-keycloak-sample-person-meta-data-l', 'Unit | Route | t-v-ke
     'service:objectlistview-events',
     'service:app-state',
     'service:adv-limit',
+    'service:keycloak-session',
   ],
 });
 

@@ -9,6 +9,7 @@ moduleFor('route:t-v-keycloak-sample-social-network-e', 'Unit | Route | t-v-keyc
     'service:user-settings',
     'service:app-state',
     'service:adv-limit',
+    'service:keycloak-session',
   ],
 });
 
