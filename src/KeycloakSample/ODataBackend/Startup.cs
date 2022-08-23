@@ -9,17 +9,21 @@
     using Microsoft.AspNet.OData.Extensions;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Microsoft.IdentityModel.Tokens;
+    using NewPlatform.Flexberry.Caching;
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Files;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
     using NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions;
     using NewPlatform.Flexberry.ORM.ODataServiceCore.Common.Exceptions;
+    using NewPlatform.Flexberry.Security;
     using NewPlatform.Flexberry.Services;
     using Unity;
+    using static ICSSoft.Services.CurrentUserService;
 
     /// <summary>
     /// Класс настройки запуска приложения.
@@ -181,6 +185,7 @@
                     null));
         }
 
+
         /// <summary>
         /// Register ORM implementations.
         /// </summary>
@@ -193,9 +198,39 @@
                 throw new System.Configuration.ConfigurationErrorsException("DefConnStr is not specified in Configuration or enviromnent variables.");
             }
 
-            container.RegisterSingleton<ISecurityManager, EmptySecurityManager>();
-            container.RegisterSingleton<IDataService, PostgresDataService>(
-                Inject.Property(nameof(PostgresDataService.CustomizationString), connStr));
+            container.RegisterInstance(Configuration);
+
+            container.RegisterType<IConfigResolver, ConfigResolver>(TypeLifetime.Singleton);
+
+            IHttpContextAccessor contextAccesor = new HttpContextAccessor();
+            container.RegisterInstance<IHttpContextAccessor>(contextAccesor);
+
+            // Регистрируем CurrentUserService.
+            IUser userService = new Authentication.CurrentUserService(container.Resolve<IHttpContextAccessor>());
+            container.RegisterInstance(userService, InstanceLifetime.Singleton);
+
+            // Регистрируем SecurityManager. Является общим, при регистрации следующих компонентов, будет разрешаться автоматически.
+            ISecurityManager emptySecurityManager = new EmptySecurityManager();
+            string securityConnectionString = connStr;
+            IDataService securityDataService = new PostgresDataService(emptySecurityManager)
+            {
+                CustomizationString = securityConnectionString
+            };
+
+            ICacheService securityCacheService = new MemoryCacheService();
+            ISecurityManager securityManager = new SecurityManager(securityDataService, securityCacheService, true);
+
+            container.RegisterInstance<ISecurityManager>(securityManager, InstanceLifetime.Singleton);
+
+            // Регистрируем основной DataService.
+            string mainConnectionString = connStr;
+            IDataService mainDataService = new PostgresDataService()
+            {
+                CustomizationString = mainConnectionString
+            };
+
+            container.RegisterInstance<IDataService>(mainDataService, InstanceLifetime.Singleton);
+
         }
     }
 }

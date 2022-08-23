@@ -28,7 +28,7 @@ namespace TV.KeycloakSample
     // *** End programmer edit section *** (ChatBotMessage CustomAttributes)
     [AutoAltered()]
     [Caption("Chat bot message")]
-    [AccessType(ICSSoft.STORMNET.AccessType.none)]
+    [AccessType(ICSSoft.STORMNET.AccessType.@base)]
     [View("ChatBotMessageE", new string[] {
             "DateTime as \'Date time\'",
             "Text as \'Text\'",
