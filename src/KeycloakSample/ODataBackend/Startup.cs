@@ -1,6 +1,9 @@
 ﻿namespace TV.KeycloakSample
 {
     using System;
+    using System.Linq;
+    using System.Reflection;
+    using System.Security.Claims;
     using ICSSoft.Services;
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
@@ -22,6 +25,9 @@
     using NewPlatform.Flexberry.ORM.ODataServiceCore.Common.Exceptions;
     using NewPlatform.Flexberry.Security;
     using NewPlatform.Flexberry.Services;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+    using TV.KeycloakSample.Authentication;
     using Unity;
     using static ICSSoft.Services.CurrentUserService;
 
@@ -46,6 +52,9 @@
         public IConfiguration Configuration { get; }
 
         private IWebHostEnvironment Environment { get; }
+
+
+
         /// <summary>
         /// Configurate application services.
         /// </summary>
@@ -92,6 +101,8 @@
                 .AddNpgSql(connStr);
         }
 
+        private static Assembly SecurityAssembly = typeof(Agent).Assembly;
+
         /// <summary>
         /// Configurate the HTTP request pipeline.
         /// </summary>
@@ -129,12 +140,58 @@
                     typeof(ObjectsMarker).Assembly,
                     typeof(ApplicationLog).Assembly,
                     typeof(UserSetting).Assembly,
+                    SecurityAssembly,
                     typeof(Lock).Assembly,
                 };
-                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, true);
 
+                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, true);
+                modelBuilder.PropertyFilter = ProperyFilter;
                 var token = builder.MapDataObjectRoute(modelBuilder);
+                token.Events.CallbackAfterGet = AfterGet;
+                token.Events.CallbackBeforeCreate = BeforeHandler;
+                token.Events.CallbackBeforeDelete = BeforeHandler;
+                token.Events.CallbackBeforeUpdate = BeforeHandler;
             });
+        }
+
+        private static bool BeforeHandler(DataObject obj)
+        {
+            // Проверка на возможность манипултрования объектами Security только для админа.
+            if (obj.GetType().Assembly == SecurityAssembly)
+            {
+                IUnityContainer container = UnityFactory.GetContainer();
+                var user = container.Resolve<IUserWithRole>();
+                return user.IsAdmin();
+            }
+
+            return true;
+        }
+
+
+        /// <summary>
+        /// Выполнить дополнительную обработку объекта после вычитки.
+        /// </summary>
+        /// <param name="objs">Вычитанный объект.</param>
+        public static void AfterGet(ref DataObject[] objs)
+        {
+            foreach (var obj in objs)
+            {
+                if (obj.GetType() == typeof(Agent))
+                {
+                    ((Agent)obj).Pwd = null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Delegate containing properties filtering logic.
+        /// Resulting EDM models will contain only those properties for which this delegate will return <c>true</c>.
+        /// </summary>
+        /// <param name="propertyInfo">Property metadata.</param>
+        /// <returns>Flag indicating whether to include property into resulting EDM model or not.</returns>
+        private bool ProperyFilter(PropertyInfo propertyInfo)
+        {
+            return Information.ExtractPropertyInfo<Agent>(x => x.Pwd) != propertyInfo;
         }
 
         /// <summary>
@@ -202,14 +259,6 @@
 
             container.RegisterType<IConfigResolver, ConfigResolver>(TypeLifetime.Singleton);
 
-            IHttpContextAccessor contextAccesor = new HttpContextAccessor();
-            container.RegisterInstance<IHttpContextAccessor>(contextAccesor);
-
-            // Регистрируем CurrentUserService.
-            IUser userService = new Authentication.CurrentUserService(container.Resolve<IHttpContextAccessor>());
-            container.RegisterInstance(userService, InstanceLifetime.Singleton);
-
-            // Регистрируем SecurityManager. Является общим, при регистрации следующих компонентов, будет разрешаться автоматически.
             ISecurityManager emptySecurityManager = new EmptySecurityManager();
             string securityConnectionString = connStr;
             IDataService securityDataService = new PostgresDataService(emptySecurityManager)
@@ -221,6 +270,14 @@
             ISecurityManager securityManager = new SecurityManager(securityDataService, securityCacheService, true);
 
             container.RegisterInstance<ISecurityManager>(securityManager, InstanceLifetime.Singleton);
+            container.RegisterType<IPasswordHasher, EmptyPasswordHasher>();
+            var agentManager = new AgentManager(securityDataService, securityCacheService);
+            container.RegisterInstance<IAgentManager>(agentManager, InstanceLifetime.Singleton);
+            IHttpContextAccessor contextAccesor = new HttpContextAccessor();
+            container.RegisterInstance<IHttpContextAccessor>(contextAccesor);
+
+            container.RegisterType<IUserWithRole, User>();
+            container.RegisterType<IUser, User>();
 
             // Регистрируем основной DataService.
             string mainConnectionString = connStr;

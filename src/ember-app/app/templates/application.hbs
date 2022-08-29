@@ -11,8 +11,11 @@
     onHidden=(action "updateWidth")
   )
 }}
-  {{flexberry-sitemap-guideline
- sitemap=sitemap class="flexberry-sitemap"}}
+  {{flexberry-sitemap-guideline sitemap=sitemap class="flexberry-sitemap"}}
+  {{#if isAdmin}}
+    {{flexberry-sitemap-guideline sitemap=sitemapSecurity class="flexberry-sitemap"}}
+  {{/if}}
+
 {{/flexberry-sidebar}}
 <div class="bgw-fix">
   <div class="background-logo">

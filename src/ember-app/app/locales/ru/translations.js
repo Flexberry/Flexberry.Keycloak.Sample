@@ -1,5 +1,7 @@
 import $ from 'jquery';
 import EmberFlexberryTranslations from 'ember-flexberry/locales/ru/translations';
+import EmberFlexberrySecurityTranslations from 'ember-flexberry-security/locales/ru/translations';
+import ICSSoftSTORMNETSecurityAccessEForm from 'ember-flexberry-security/locales/ru/forms/i-c-s-soft-s-t-o-r-m-n-e-t-security-access-e';
 
 import TVKeycloakSampleChatBotMessageLForm from './forms/t-v-keycloak-sample-chat-bot-message-l';
 import TVKeycloakSamplePersonLForm from './forms/t-v-keycloak-sample-person-l';
@@ -19,7 +21,7 @@ import TVKeycloakSampleRequestPersonDataModel from './models/t-v-keycloak-sample
 import TVKeycloakSampleSocialNetworkModel from './models/t-v-keycloak-sample-social-network';
 
 const translations = {};
-$.extend(true, translations, EmberFlexberryTranslations);
+$.extend(true, translations, EmberFlexberryTranslations, EmberFlexberrySecurityTranslations, ICSSoftSTORMNETSecurityAccessEForm);
 
 $.extend(true, translations, {
   models: {
