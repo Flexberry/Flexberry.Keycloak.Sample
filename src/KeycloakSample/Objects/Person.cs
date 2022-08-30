@@ -27,7 +27,7 @@ namespace TV.KeycloakSample
 
     // *** End programmer edit section *** (Person CustomAttributes)
     [AutoAltered()]
-    [AccessType(ICSSoft.STORMNET.AccessType.@base)]
+    [AccessType(ICSSoft.STORMNET.AccessType.@this)]
     [View("PersonE", new string[] {
             "EsiaId as \'Esia id\'",
             "Name as \'Name\'",

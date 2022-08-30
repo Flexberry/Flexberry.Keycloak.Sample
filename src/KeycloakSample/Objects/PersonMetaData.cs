@@ -28,7 +28,7 @@ namespace TV.KeycloakSample
     // *** End programmer edit section *** (PersonMetaData CustomAttributes)
     [AutoAltered()]
     [Caption("Person meta data")]
-    [AccessType(ICSSoft.STORMNET.AccessType.@base)]
+    [AccessType(ICSSoft.STORMNET.AccessType.@this)]
     [View("PersonMetaDataE", new string[] {
             "Url as \'Url\'",
             "DateTime as \'Date time\'",

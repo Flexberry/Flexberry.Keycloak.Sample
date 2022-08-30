@@ -28,7 +28,7 @@ namespace TV.KeycloakSample
     // *** End programmer edit section *** (RequestPersonData CustomAttributes)
     [AutoAltered()]
     [Caption("Request person data")]
-    [AccessType(ICSSoft.STORMNET.AccessType.@base)]
+    [AccessType(ICSSoft.STORMNET.AccessType.@this)]
     [View("RequestPersonDataE", new string[] {
             "Body as \'Body\'",
             "Result as \'Result\'",

@@ -28,7 +28,7 @@ namespace TV.KeycloakSample
     // *** End programmer edit section *** (PersonAccount CustomAttributes)
     [AutoAltered()]
     [Caption("Person account")]
-    [AccessType(ICSSoft.STORMNET.AccessType.@base)]
+    [AccessType(ICSSoft.STORMNET.AccessType.@this)]
     [View("PersonAccountE", new string[] {
             "AccountId as \'Account id\'",
             "SocialNetwork as \'Social network\'",

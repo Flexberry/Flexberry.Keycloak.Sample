@@ -28,7 +28,7 @@ namespace TV.KeycloakSample
     // *** End programmer edit section *** (SocialNetwork CustomAttributes)
     [AutoAltered()]
     [Caption("Social network")]
-    [AccessType(ICSSoft.STORMNET.AccessType.@base)]
+    [AccessType(ICSSoft.STORMNET.AccessType.@this)]
     [View("SocialNetworkE", new string[] {
             "Name as \'Name\'"})]
     [View("SocialNetworkL", new string[] {

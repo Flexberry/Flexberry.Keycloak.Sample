@@ -156,7 +156,7 @@
 
         private static bool BeforeHandler(DataObject obj)
         {
-            // Проверка на возможность манипултрования объектами Security только для админа.
+            // Проверка на возможность манипулирования объектами Security только для админа.
             if (obj.GetType().Assembly == SecurityAssembly)
             {
                 IUnityContainer container = UnityFactory.GetContainer();
