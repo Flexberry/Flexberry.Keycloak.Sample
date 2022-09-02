@@ -145,7 +145,6 @@
                 };
 
                 var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, true);
-                modelBuilder.PropertyFilter = ProperyFilter;
                 var token = builder.MapDataObjectRoute(modelBuilder);
                 token.Events.CallbackAfterGet = AfterGet;
                 token.Events.CallbackBeforeCreate = BeforeHandler;
@@ -181,17 +180,6 @@
                     ((Agent)obj).Pwd = null;
                 }
             }
-        }
-
-        /// <summary>
-        /// Delegate containing properties filtering logic.
-        /// Resulting EDM models will contain only those properties for which this delegate will return <c>true</c>.
-        /// </summary>
-        /// <param name="propertyInfo">Property metadata.</param>
-        /// <returns>Flag indicating whether to include property into resulting EDM model or not.</returns>
-        private bool ProperyFilter(PropertyInfo propertyInfo)
-        {
-            return Information.ExtractPropertyInfo<Agent>(x => x.Pwd) != propertyInfo;
         }
 
         /// <summary>

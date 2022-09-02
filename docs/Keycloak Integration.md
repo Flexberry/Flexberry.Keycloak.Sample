@@ -286,40 +286,35 @@ private void RegisterORM(IUnityContainer container)
 
 Добавить соответствующие роуты в **router.js**:
 ```js
-this.route('i-c-s-soft-s-t-o-r-m-n-e-t-business-audit-objects-audit-entity-l');
-  this.route('i-c-s-soft-s-t-o-r-m-n-e-t-business-audit-objects-audit-entity-e',
-    { path: 'i-c-s-soft-s-t-o-r-m-n-e-t-business-audit-objects-audit-entity-e/:id' });
-  this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-access-l');
-  this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-access-e', { path: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-access-e/:id' });
-  this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-access-e.new', { path: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-access-e/new' });
   this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-class-l');
-  this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-class-e', { path: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-class-e/:id' });
-  this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-class-e.new', { path: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-class-e/new' });
+  this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-class-e',
+    { path: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-class-e/:id' });
+  this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-class-e.new',
+    { path: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-class-e/new' });
+
   this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-group-l');
-  this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-group-e', { path: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-group-e/:id' });
-  this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-group-e.new', { path: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-group-e/new' });
-  this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-link-group-l');
-  this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-link-group-e', { path: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-link-group-e/:id' });
-  this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-link-group-e.new', { path: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-link-group-e/new' });
-  this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-link-role-l');
-  this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-link-role-e', { path: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-link-role-e/:id' });
-  this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-link-role-e.new', { path: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-link-role-e/new' });
+  this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-group-e',
+    { path: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-group-e/:id' });
+  this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-group-e.new',
+    { path: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-group-e/new' });
+
   this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-operation-l');
-  this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-operation-e', { path: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-operation-e/:id' });
-  this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-operation-e.new', { path: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-operation-e/new' });
-  this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-permition-l');
-  this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-permition-e', { path: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-permition-e/:id' });
-  this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-permition-e.new', { path: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-permition-e/new' });
+  this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-operation-e',
+    { path: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-operation-e/:id' });
+  this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-operation-e.new',
+    { path: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-operation-e/new' });
+
   this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-role-l');
-  this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-role-e', { path: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-role-e/:id' });
-  this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-role-e.new', { path: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-role-e/new' });
-  this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-view-l');
-  this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-view-e', { path: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-view-e/:id' });
-  this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-view-e.new', { path: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-view-e/new' });
+  this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-role-e',
+  { path: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-role-e/:id' });
+  this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-role-e.new',
+    { path: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-role-e/new' });
+
   this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-user-l');
-  this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-user-e', { path: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-user-e/:id' });
-  this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-user-e.new', { path: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-user-e/new' });
-```
+  this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-user-e',
+    { path: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-user-e/:id' });
+  this.route('i-c-s-soft-s-t-o-r-m-n-e-t-security-user-e.new',
+    { path: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-user-e/new' });
 
 В контроллер **/controllers/application.js** добавить сайтмап для навигации по страницам Security:
 
@@ -335,9 +330,9 @@ sitemapSecurity: computed('i18n.locale', function () {
        title: i18n.t('forms.application.sitemap.полномочия.title'),
        children: [
          {
-           link: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-role-l',
-           caption: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-role-l.caption'),
-           title: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-role-l.title'),
+           link: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-group-l',
+           caption: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-group-l.caption'),
+           title: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-group-l.title'),
            children: null
          },
          {
@@ -356,36 +351,6 @@ sitemapSecurity: computed('i18n.locale', function () {
            link: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-operation-l',
            caption: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-operation-l.caption'),
            title: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-operation-l.title'),
-           children: null
-         },
-         {
-           link: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-view-l',
-           caption: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-view-l.caption'),
-           title: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-view-l.title'),
-           children: null
-         },
-         {
-           link: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-permition-l',
-           caption: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-permition-l.caption'),
-           title: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-permition-l.title'),
-           children: null
-         },
-         {
-           link: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-access-l',
-           caption: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-access-l.caption'),
-           title: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-access-l.title'),
-           children: null
-         },
-         {
-           link: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-link-group-l',
-           caption: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-link-group-l.caption'),
-           title: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-link-group-l.title'),
-           children: null
-         },
-         {
-           link: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-link-role-l',
-           caption: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-link-role-l.caption'),
-           title: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-link-role-l.title'),
            children: null
          },
          {
@@ -462,7 +427,6 @@ $.extend(true, translations, ... , EmberFlexberrySecurityTranslations);
 
 ```cs
   var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, true);
-  modelBuilder.PropertyFilter = ProperyFilter;
   var token = builder.MapDataObjectRoute(modelBuilder);
   token.Events.CallbackAfterGet = AfterGet;
   token.Events.CallbackBeforeCreate = BeforeHandler;
@@ -497,11 +461,6 @@ $.extend(true, translations, ... , EmberFlexberrySecurityTranslations);
               ((Agent)obj).Pwd = null;
           }
       }
-  }
-
-  private bool ProperyFilter(PropertyInfo propertyInfo)
-  {
-      return Information.ExtractPropertyInfo<Agent>(x => x.Pwd) != propertyInfo;
   }
 ```
 

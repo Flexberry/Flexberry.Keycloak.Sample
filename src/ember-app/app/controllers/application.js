@@ -69,9 +69,9 @@ export default Controller.extend({
           title: i18n.t('forms.application.sitemap.полномочия.title'),
           children: [
             {
-              link: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-role-l',
-              caption: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-role-l.caption'),
-              title: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-role-l.title'),
+              link: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-group-l',
+              caption: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-group-l.caption'),
+              title: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-group-l.title'),
               children: null
             },
             {
@@ -90,36 +90,6 @@ export default Controller.extend({
               link: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-operation-l',
               caption: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-operation-l.caption'),
               title: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-operation-l.title'),
-              children: null
-            },
-            {
-              link: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-view-l',
-              caption: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-view-l.caption'),
-              title: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-view-l.title'),
-              children: null
-            },
-            {
-              link: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-permition-l',
-              caption: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-permition-l.caption'),
-              title: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-permition-l.title'),
-              children: null
-            },
-            {
-              link: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-access-l',
-              caption: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-access-l.caption'),
-              title: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-access-l.title'),
-              children: null
-            },
-            {
-              link: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-link-group-l',
-              caption: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-link-group-l.caption'),
-              title: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-link-group-l.title'),
-              children: null
-            },
-            {
-              link: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-link-role-l',
-              caption: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-link-role-l.caption'),
-              title: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-link-role-l.title'),
               children: null
             },
             {
