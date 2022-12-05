@@ -9,6 +9,7 @@ moduleFor('route:t-v-keycloak-sample-request-person-data-e', 'Unit | Route | t-v
     'service:user-settings',
     'service:app-state',
     'service:adv-limit',
+    'service:keycloak-session',
   ],
 });
 

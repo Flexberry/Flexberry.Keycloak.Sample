@@ -12,6 +12,19 @@ services:
       - BackendRoot=https://localhost
       - DefConnStr=SERVER=app-postgres-db;User ID=postgres;Password=p@ssw0rd;Port=5432;database=appdb;
 
+  keycloak:
+    image: quay.io/keycloak/keycloak:19.0.1
+    ports:
+      - "8080:8080"
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://app-postgres-db:5432/keycloak
+      KC_DB_USERNAME: postgres
+      KC_DB_PASSWORD: p@ssw0rd
+    command: start-dev
+
   app-postgres-db:
     image: keycloaksample/postgre-sql
     volumes:

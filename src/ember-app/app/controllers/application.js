@@ -4,8 +4,7 @@ import { computed, observer } from '@ember/object';
 import { isNone } from '@ember/utils';
 import { A } from '@ember/array';
 import { inject as service } from '@ember/service';
-
-
+import config from '../config/environment';
 
 export default Controller.extend({
   sitemap: computed('i18n.locale', function () {
@@ -59,7 +58,51 @@ export default Controller.extend({
       ]
     };
   }),
+  sitemapSecurity: computed('i18n.locale', function () {
+    let i18n = this.get('i18n');
 
+    return {
+      nodes: [
+        {
+          link: null,
+          caption: i18n.t('forms.application.sitemap.полномочия.caption'),
+          title: i18n.t('forms.application.sitemap.полномочия.title'),
+          children: [
+            {
+              link: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-group-l',
+              caption: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-group-l.caption'),
+              title: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-group-l.title'),
+              children: null
+            },
+            {
+              link: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-group-l',
+              caption: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-group-l.caption'),
+              title: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-group-l.title'),
+              children: null
+            },
+            {
+              link: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-class-l',
+              caption: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-class-l.caption'),
+              title: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-class-l.title'),
+              children: null
+            },
+            {
+              link: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-operation-l',
+              caption: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-operation-l.caption'),
+              title: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-operation-l.title'),
+              children: null
+            },
+            {
+              link: 'i-c-s-soft-s-t-o-r-m-n-e-t-security-user-l',
+              caption: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-user-l.caption'),
+              title: i18n.t('forms.application.sitemap.полномочия.i-c-s-soft-s-t-o-r-m-n-e-t-security-user-l.title'),
+              children: null
+            }
+          ]
+        }
+      ]
+    };
+  }),
   /**
     Locales supported by application.
 
@@ -121,8 +164,47 @@ export default Controller.extend({
     @type AppStateService
   */
   appState: service(),
+  /**
+    Service for user authorization session.
+
+    @property keycloakSession
+    @type KeycloakSessionService
+  */
+    keycloakSession: service(),
+
+    /**
+      User name from session data.
+   */
+    userName: computed('keycloakSession.tokenParsed.preferred_username', function() {
+      return this.keycloakSession.tokenParsed.preferred_username;
+    }),
+
+    /**
+      Is current user has admin role.
+   */
+    isAdmin: computed('keycloakSession.keycloak.token', function() {
+      const _this = this;
+      fetch(`${config.APP.backendUrls.root}/api/IsAdmin`,{
+        headers: {'Authorization': `Bearer ${this.keycloakSession.keycloak['token']}`}
+      }
+      ).then(function(response) {
+        return response.text();
+      }).then(function(text) {
+        _this.set('isAdmin', text === "true");
+      });
+    }),
+
 
   actions: {
+  /**
+    Performs user logout.
+
+    @method actions.logout
+  */
+    logout()
+    {
+        this.keycloakSession.logout();
+    },
     /**
       Call `updateWidthTrigger` for `objectlistviewEventsService`.
 

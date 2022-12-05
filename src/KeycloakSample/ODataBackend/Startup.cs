@@ -1,6 +1,9 @@
 ﻿namespace TV.KeycloakSample
 {
     using System;
+    using System.Linq;
+    using System.Reflection;
+    using System.Security.Claims;
     using ICSSoft.Services;
     using ICSSoft.STORMNET;
     using ICSSoft.STORMNET.Business;
@@ -9,15 +12,24 @@
     using Microsoft.AspNet.OData.Extensions;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Http;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using Microsoft.IdentityModel.Tokens;
+    using NewPlatform.Flexberry.Caching;
     using NewPlatform.Flexberry.ORM.ODataService.Extensions;
     using NewPlatform.Flexberry.ORM.ODataService.Files;
     using NewPlatform.Flexberry.ORM.ODataService.Model;
     using NewPlatform.Flexberry.ORM.ODataService.WebApi.Extensions;
     using NewPlatform.Flexberry.ORM.ODataServiceCore.Common.Exceptions;
+    using NewPlatform.Flexberry.Security;
     using NewPlatform.Flexberry.Services;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+    using TV.KeycloakSample.Authentication;
     using Unity;
+    using static ICSSoft.Services.CurrentUserService;
 
     /// <summary>
     /// Класс настройки запуска приложения.
@@ -28,15 +40,20 @@
         /// Initializes a new instance of the <see cref="Startup" /> class.
         /// </summary>
         /// <param name="configuration">An application configuration properties.</param>
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
+            Environment = environment;
         }
 
         /// <summary>
         /// An application configuration properties.
         /// </summary>
         public IConfiguration Configuration { get; }
+
+        private IWebHostEnvironment Environment { get; }
+
+
 
         /// <summary>
         /// Configurate application services.
@@ -48,6 +65,23 @@
         public void ConfigureServices(IServiceCollection services)
         {
             string connStr = Configuration["DefConnStr"];
+
+            var authorityUrl = Configuration["AuthorityUrl"];
+            services.AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", options =>
+                {
+                    options.Authority = authorityUrl;
+                    if (Environment.IsDevelopment())
+                    {
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateAudience = false,
+                        };
+                        options.RequireHttpsMetadata = false;
+                    }
+                });
+
+            services.AddAuthorization();
 
             services.AddMvcCore(
                     options =>
@@ -67,6 +101,8 @@
                 .AddNpgSql(connStr);
         }
 
+        private static Assembly SecurityAssembly = typeof(Agent).Assembly;
+
         /// <summary>
         /// Configurate the HTTP request pipeline.
         /// </summary>
@@ -83,6 +119,9 @@
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 
@@ -101,12 +140,46 @@
                     typeof(ObjectsMarker).Assembly,
                     typeof(ApplicationLog).Assembly,
                     typeof(UserSetting).Assembly,
+                    SecurityAssembly,
                     typeof(Lock).Assembly,
                 };
-                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, true);
 
+                var modelBuilder = new DefaultDataObjectEdmModelBuilder(assemblies, true);
                 var token = builder.MapDataObjectRoute(modelBuilder);
+                token.Events.CallbackAfterGet = AfterGet;
+                token.Events.CallbackBeforeCreate = BeforeHandler;
+                token.Events.CallbackBeforeDelete = BeforeHandler;
+                token.Events.CallbackBeforeUpdate = BeforeHandler;
             });
+        }
+
+        private static bool BeforeHandler(DataObject obj)
+        {
+            // Проверка на возможность манипулирования объектами Security только для админа.
+            if (obj.GetType().Assembly == SecurityAssembly)
+            {
+                IUnityContainer container = UnityFactory.GetContainer();
+                var user = container.Resolve<IUserWithRole>();
+                return user.IsAdmin();
+            }
+
+            return true;
+        }
+
+
+        /// <summary>
+        /// Выполнить дополнительную обработку объекта после вычитки.
+        /// </summary>
+        /// <param name="objs">Вычитанный объект.</param>
+        public static void AfterGet(ref DataObject[] objs)
+        {
+            foreach (var obj in objs)
+            {
+                if (obj.GetType() == typeof(Agent))
+                {
+                    ((Agent)obj).Pwd = null;
+                }
+            }
         }
 
         /// <summary>
@@ -157,6 +230,7 @@
                     null));
         }
 
+
         /// <summary>
         /// Register ORM implementations.
         /// </summary>
@@ -169,9 +243,39 @@
                 throw new System.Configuration.ConfigurationErrorsException("DefConnStr is not specified in Configuration or enviromnent variables.");
             }
 
-            container.RegisterSingleton<ISecurityManager, EmptySecurityManager>();
-            container.RegisterSingleton<IDataService, PostgresDataService>(
-                Inject.Property(nameof(PostgresDataService.CustomizationString), connStr));
+            container.RegisterInstance(Configuration);
+
+            container.RegisterType<IConfigResolver, ConfigResolver>(TypeLifetime.Singleton);
+
+            ISecurityManager emptySecurityManager = new EmptySecurityManager();
+            string securityConnectionString = connStr;
+            IDataService securityDataService = new PostgresDataService(emptySecurityManager)
+            {
+                CustomizationString = securityConnectionString
+            };
+
+            ICacheService securityCacheService = new MemoryCacheService();
+            ISecurityManager securityManager = new SecurityManager(securityDataService, securityCacheService, true);
+
+            container.RegisterInstance<ISecurityManager>(securityManager, InstanceLifetime.Singleton);
+            container.RegisterType<IPasswordHasher, EmptyPasswordHasher>();
+            var agentManager = new AgentManager(securityDataService, securityCacheService);
+            container.RegisterInstance<IAgentManager>(agentManager, InstanceLifetime.Singleton);
+            IHttpContextAccessor contextAccesor = new HttpContextAccessor();
+            container.RegisterInstance<IHttpContextAccessor>(contextAccesor);
+
+            container.RegisterType<IUserWithRole, User>();
+            container.RegisterType<IUser, User>();
+
+            // Регистрируем основной DataService.
+            string mainConnectionString = connStr;
+            IDataService mainDataService = new PostgresDataService()
+            {
+                CustomizationString = mainConnectionString
+            };
+
+            container.RegisterInstance<IDataService>(mainDataService, InstanceLifetime.Singleton);
+
         }
     }
 }

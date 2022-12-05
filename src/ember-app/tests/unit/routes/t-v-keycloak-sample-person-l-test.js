@@ -8,6 +8,7 @@ moduleFor('route:t-v-keycloak-sample-person-l', 'Unit | Route | t-v-keycloak-sam
     'service:objectlistview-events',
     'service:app-state',
     'service:adv-limit',
+    'service:keycloak-session',
   ],
 });
 

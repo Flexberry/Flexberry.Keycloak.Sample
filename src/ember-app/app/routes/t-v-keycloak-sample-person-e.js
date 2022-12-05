@@ -1,4 +1,4 @@
-import EditFormRoute from 'ember-flexberry/routes/edit-form';
+import EditFormRoute from './base/edit-form';
 
 export default EditFormRoute.extend({
   modelProjection: 'PersonE',

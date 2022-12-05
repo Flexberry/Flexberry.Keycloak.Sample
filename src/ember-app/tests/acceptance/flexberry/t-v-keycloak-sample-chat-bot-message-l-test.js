@@ -5,6 +5,7 @@ import moduleForAcceptance from 'ember-app/tests/helpers/module-for-acceptance';
 moduleForAcceptance('[AGAT] Acceptance | t v keycloak sample chat bot message l');
 
 test('testing t-v-keycloak-sample-chat-bot-message-l', function(assert) {
+  assert.expect(0);
   visit('/t-v-keycloak-sample-chat-bot-message-l');
 
   checkOlvConfig('[data-test-component=flexberry-objectlistview]', null, assert, [
@@ -25,5 +26,6 @@ test('testing t-v-keycloak-sample-chat-bot-message-l', function(assert) {
     if (listNotEmpty) {
       click('[data-test-component=flexberry-objectlistview] td.field:first');
     }
+
   });
 });

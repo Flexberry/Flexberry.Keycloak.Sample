@@ -4,6 +4,7 @@ import { merge } from '@ember/polyfills';
 import { run } from '@ember/runloop';
 
 import 'ember-flexberry/test-support';
+import keycloakSessionMock from '../test-services/keycloak-session';
 
 export default function startApp(attrs) {
   let attributes = merge({}, config.APP);
@@ -14,6 +15,7 @@ export default function startApp(attrs) {
     let application = Application.create(attributes);
     application.setupForTesting();
     application.injectTestHelpers();
+    application.__container__.owner.register('service:keycloakSession', keycloakSessionMock);
     return application;
   });
 }

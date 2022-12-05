@@ -3,7 +3,7 @@
 module.exports = function(environment) {
   // Replace this local address to remote when backed will be published.
   var backendUrl = 'http://localhost:6500';
-
+  var authorityUrl = 'http://keycloak:8080';
   if (environment === 'development-loc') {
     // Use `ember s -e development-loc` command for local backend usage.
     backendUrl = 'http://localhost:6500';
@@ -32,7 +32,15 @@ module.exports = function(environment) {
         Date: false
       }
     },
-
+    KeycloakAuthSettings: {
+      ClientOptions: {
+        url: authorityUrl,
+        realm: 'master',
+        clientId: 'ember-app'
+      },
+      checkLoginIframe: false, // Можно включить если будет https и авторизация на одном поддомене.
+      responseMode: 'query', // Для работоспособности редиректа после логина.
+    },
     APP: {
       // Application name. Used in `user-settings` service.
       name: 'ember-app',

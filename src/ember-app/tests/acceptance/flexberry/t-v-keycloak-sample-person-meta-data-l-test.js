@@ -5,6 +5,7 @@ import moduleForAcceptance from 'ember-app/tests/helpers/module-for-acceptance';
 moduleForAcceptance('[AGAT] Acceptance | t v keycloak sample person meta data l');
 
 test('testing t-v-keycloak-sample-person-meta-data-l', function(assert) {
+  assert.expect(0);
   visit('/t-v-keycloak-sample-person-meta-data-l');
 
   checkOlvConfig('[data-test-component=flexberry-objectlistview]', null, assert, [
