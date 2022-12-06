@@ -1,0 +1,77 @@
+{
+  "ProjectId": "d172329d-d6b4-4998-98ed-eb31419b7a27",
+  "CrpLocalPath": null,
+  "JsonMetadataPath": null,
+  "OnlineCrpUrl": "https://designer.flexberry.net",
+  "OneShotToken": null,
+  "GenPath": "src",
+  "BeforeGenScriptPath": null,
+  "AfterGenScriptPath": null,
+  "GenerationItems": {
+    "Validate": false,
+    "Frontend": {
+      "EmberJs": {
+        "EmberApp": true,
+        "EmberAddon": false,
+        "Build": false,
+        "GitClone": false,
+        "GitPush": false,
+        "GhPagesPush": true
+      },
+      "ApacheCordova": {
+        "CordovaProject": false,
+        "BuildApp": false
+      }
+    },
+    "Backend": {
+      "AspNet": false,
+      "AspNetCore": true,
+      "Java": false
+    },
+    "Docker": {
+      "Dockerfile": true,
+      "DockerfileAutobuild": false,
+      "DockerBuildShellScript": false,
+      "DockerSwarm": false
+    },
+    "Storage": {
+      "Mssql": {
+        "DiffSql": false,
+        "FullSql": false,
+        "Security": false,
+        "AdminUser": false,
+        "ConnectionString": null
+      },
+      "PostgreSql": {
+        "DiffSql": false,
+        "FullSql": true,
+        "Security": true,
+        "AdminUser": true,
+        "ConnectionString": null
+      },
+      "ClickHouse": {
+        "DiffSql": false,
+        "FullSql": false,
+        "ConnectionString": null
+      },
+      "Oracle": {
+        "DiffSql": false,
+        "FullSql": false,
+        "ConnectionString": null
+      },
+      "Access": {
+        "DiffSql": false,
+        "FullSql": false,
+        "ConnectionString": null
+      }
+    },
+    "Docs": {
+      "Csv": false,
+      "Wmf": false
+    },
+    "Metadata": {
+      "Crp": false,
+      "Json": false
+    }
+  }
+}
