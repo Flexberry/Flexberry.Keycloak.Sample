@@ -31,6 +31,7 @@ namespace TV.KeycloakSample
     [AccessType(ICSSoft.STORMNET.AccessType.@this)]
     [View("PersonAccountE", new string[] {
             "AccountId as \'Account id\'",
+            "Person as \'Person\'",
             "SocialNetwork as \'Social network\'",
             "SocialNetwork.Name as \'Name\'"}, Hidden=new string[] {
             "SocialNetwork.Name"})]

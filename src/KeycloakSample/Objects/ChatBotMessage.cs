@@ -52,18 +52,19 @@ namespace TV.KeycloakSample
         private TV.KeycloakSample.ChatMessageType fChatMessageType;
         
         private TV.KeycloakSample.Person fPerson;
-        
+
         // *** Start programmer edit section *** (ChatBotMessage CustomMembers)
 
         // *** End programmer edit section *** (ChatBotMessage CustomMembers)
 
-        
+
         /// <summary>
         /// DateTime.
         /// </summary>
         // *** Start programmer edit section *** (ChatBotMessage.DateTime CustomAttributes)
 
         // *** End programmer edit section *** (ChatBotMessage.DateTime CustomAttributes)
+        [NotNull()]
         public virtual System.DateTime DateTime
         {
             get

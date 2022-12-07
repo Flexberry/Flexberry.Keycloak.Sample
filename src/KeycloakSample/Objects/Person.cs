@@ -259,13 +259,14 @@ namespace TV.KeycloakSample
                 // *** End programmer edit section *** (Person.Sex Set end)
             }
         }
-        
+
         /// <summary>
         /// Reputation.
         /// </summary>
         // *** Start programmer edit section *** (Person.Reputation CustomAttributes)
 
         // *** End programmer edit section *** (Person.Reputation CustomAttributes)
+        [NotNull()]
         public virtual int Reputation
         {
             get
