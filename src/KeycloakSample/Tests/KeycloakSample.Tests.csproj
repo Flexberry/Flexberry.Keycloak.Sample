@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
     <Configurations>Debug;Release</Configurations>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>preview</LangVersion>
     <RootNamespace>TV.KeycloakSample</RootNamespace>
     <AssemblyName>KeycloakSample.Tests</AssemblyName>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
